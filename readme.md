@@ -35,12 +35,12 @@
     
     There are 62 alphanumeric charactor and x is one of alphanumeric charactor
     short_hash_string  combinations
-    x                  = 64   
-    xx                 = 64*64 = 4096 
-    xxx                = 64*64*64 = 262144 
-    xxxx               = 64*64*64*64 = 16777216 
-    xxxxx              = 64*64*64*64*64 = 1073741824  
-    xxxxxx             = 64*64*64*64*64*64 = 68719476736  
+    x                  = 62   
+    xx                 = 62*62 = 3844 
+    xxx                = 62*62*62 = 246016 
+    xxxx               = 62*62*62*62 = 15252992 
+    xxxxx              = 62*62*62*62*62 = 945685504  
+    xxxxxx             = 62*62*62*62*62*62 = 58632501248  
 
     -We can provide diffrent url upto 69809999936 (sum of above combination) if we just insert (short_hash_string --> actual_url) mapping without looking for short_hash_string in DB and just increment the primary key ID.
     
