@@ -1,22 +1,23 @@
 ## Architecture:
 
 ##### Key points  
-- Create one time use url for per request
-     - Form this statement i can say that  we are not going to one (actual_url --> hash_url)    mapping.
-     - Suppose we have two user  deepak , akshay. both uses our URL shortner tool and received hasted_url **https:www.<host_name>.com/f6h**  for  **https:www.youtube.com** . If deepak uses our shorten URL then akshay will not able to use same shorten URL due to one time use policy.
-     - So , In order to fulfill our one time use policy we must have different hashed_url for **https:www.youtube.com**  per request to avoid collision.
-
+- No length restriction
+     - There should be no limit on URL length. For that puspose not using inbuild URL_FIELD feature , because most of them provide support upto 200 char limit and some upto 1000. so we will receive free text from user and validate url on server end.
+  
 - Avoid losing url from formatter
-    - Almost all formatter target non-alphanumeric value for formatting. In order to avoid this issue with generate hashed_url with only alphanumeric values.
-
+    - Almost all formatter target non-alphanumeric value for formatting. In order to avoid this issue we will generate hashed_url with only alphanumeric values.
+- Link Tracker
+    - *We will also manage no of times user clicked the valid short url .*
+     
 ---
 #### APPROCH 1
 >https://HOST_NAME/<short_hash_string>
      
 1. Basic idea is to generate random short_hash_string string of length (6)
 2. Check if 
-    - this short_hash_string is not present in DB then insert short_hash_string into DB with actual_url mapping
+    - this short_hash_string is not present in DB then insert short_hash_string into DB with actual_url mapping with hit_count=0.
     - If this  short_hash_string is present , repeat step 1 
+ 
     
 ##### Limitation on this approch
 >for every new request we have look over DB to check wether currently generated string is present in DB or not which is not efficent if try to scale it.
@@ -26,11 +27,14 @@
 >https://HOST_NAME/<short_hash_string>
 
 *For this  project length of short_hash_string is >=1 and <=6*
-| ID | actual_url | short_hash_string
-| ----------- | ----------- | ----------- |
-| 1 | https://www.youtube.com/ | hash1
-| 2 | https://www.youtube.com/ | hash2
-| n | nth_URL | nth_hash | 
+
+>*This is the respresentation of our schema*
+
+| ID | actual_url | short_hash_string | hit_count
+| ----------- | ----------- | ----------- | -----------
+| 1 | https://www.youtube.com/ | hash1  | 0
+| 2 | https://www.youtube.com/ | hash2  | 2
+| n | nth_URL | nth_hash | 102
 
     
     There are 62 alphanumeric charactor and x is one of alphanumeric charactor
@@ -42,7 +46,7 @@
     xxxxx              = 62*62*62*62*62 = 945685504  
     xxxxxx             = 62*62*62*62*62*62 = 58632501248  
 
-    -We can provide diffrent url upto 69809999936 (sum of above combination) if we just insert (short_hash_string --> actual_url) mapping without looking for short_hash_string in DB and just increment the primary key ID.
+    -We can provide diffrent url upto 58632501248 (sum of above combination) if we just insert (short_hash_string --> actual_url) mapping without looking for short_hash_string in DB and just increment the primary key ID.
     
     - Now our problem shorten to 'generate a unqiue hash for a interger' and 'from this generated unique_hash i can revert back to integer'.
 ---
@@ -78,6 +82,7 @@ return: return a hashed  value
                 - Then we return the **BAD_REQUEST ERROR** or Redirect user to **invalid-url** page In that case either shorten_url already used or no row in inserted for the requested id.
         - else 
             - we receive the matched row.
+               - increase hit_count by 1
     4. Now we have matched row , retrive actual url
     5. Delete entry for this id from database 
     6. Redirect the user to actual url.
