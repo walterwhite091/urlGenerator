@@ -1,0 +1,34 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>URL Shortner</title>
+
+	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+	
+</head>
+<body>
+	<div class="main-flex">
+		<div class="divs">
+			<h1 id="heading">Short URL</h1>
+		</div>
+
+		<div class="divs">
+			<h3> Paste the URL to be shortened</h3>
+		</div>
+
+		<div class="divs">
+			<form  action='/url/' , method="post" > {% csrf_token %}
+				<input type="text" placeholder="Enter the link here" , name="actual_url">
+				<input type="submit" name="submit">
+			</form>
+		</div>
+
+ 	</div>
+
+</body>
+</html>

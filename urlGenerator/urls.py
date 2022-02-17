@@ -1,11 +1,9 @@
 
 from django.urls import path
 
-from urlGenerator.views import CreateShortenerLink, ListShortenLinks  
+# from urlGenerator.views import ShortenLinks  
 
 
-urlpatterns = [
-    path('', ListShortenLinks.as_view() , name="all_links" ),
-    path('create', CreateShortenerLink.as_view() , name="create_link"),
-
-]
+# urlpatterns = [
+#     path('', ShortenLinks.as_view() , name="CRUD operations" ),
+# ]

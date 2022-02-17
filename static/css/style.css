@@ -1,0 +1,16 @@
+/*.main-flex{
+	display: flex;
+	/*flex-direction: column;*/
+	justify-content: center;	
+}
+
+.divs{
+  width: fit-content;
+  height: fit-content;
+}
+*/
+
+
+#heading{
+	color: green;
+}

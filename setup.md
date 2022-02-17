@@ -7,10 +7,10 @@
         `virtualenv venv`
 
     - activate:
-        `source task/bin/activate`
+        `source venv/bin/activate`
 
 3.  Install packages mentioned in requirement.txt:
-    - `pip3 install -r requirement.txt`
+    - `pip3 install -r requirements.txt`
 
 4.  Update environment file (.env)
     -`source .env`
@@ -32,8 +32,9 @@ or
 ---
 
 #### END_POINTS:
-    <HOST_URL>/api/   - list of all mapping in database
-    <HOST_URL>/api/create   - create shortURL from a valid url
+    <HOST_URL> - html page rendered with a simple  user-friendly form input
+    <HOST_URL>/url/   - support [GET,POST] - use POST to create new URL and GET to receive list of all URLS in DB.
+    <HOST_URL>/url/<id>
 
 ---
 #### ENVIRONMENT FILE
